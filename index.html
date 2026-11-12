@@ -3762,7 +3762,7 @@ function render() {
     const ad2 = getActiveDays(S.week);
     const idx2 = ad2.findIndex(({date:d}) => d.getTime() === todayUTC2.getTime());
     return idx2 >= 0 ? ad2[idx2].di : ad2[0]?.di ?? 0;
-  })()] : null;
+  })())] : null;
   const pplMgmtSnap = { show: S.showPplMgmt, day: S.pplMgmtDay, ppl, activeDayStatus, people: w.people, periods: w.pplPeriods, todayTasks: _todayDayTasksSnap };
   if (!isTecView() && _snap('pplMgmt', pplMgmtSnap)) {
     try { document.getElementById('r-ppl-mgmt').innerHTML = renderPplMgmt(); }
