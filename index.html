@@ -3966,6 +3966,7 @@ function logoutView() {
   sessionStorage.removeItem('workcal_t43');
   sessionStorage.removeItem('workcal_tecnico');
   sessionStorage.removeItem('workcal_admin');
+  localStorage.removeItem('workcal_remember');
   location.reload();
 }
 window.logoutView = logoutView;
