@@ -574,22 +574,25 @@ function saveLists(l) {
 let _unsubLists = null;
 function subscribeLists() {
   if (_unsubLists) { _unsubLists(); _unsubLists = null; }
+  let _listsFirstSnap = true;
   _unsubLists = onSnapshot(listsDocRef(), snap => {
     if (snap.exists()) {
       const data = snap.data();
-      // Solo actualizar si los datos cambiaron
       const newStr = JSON.stringify(data);
       const oldStr = JSON.stringify(LISTS);
       if (newStr !== oldStr) {
         LISTS = { personal: data.personal || [], reemplazo: data.reemplazo || [] };
         _invalidateAllSnaps();
-        render();
       }
+      // Siempre renderizar en el primer snapshot para quitar el mensaje "Conectando..."
+      if (_listsFirstSnap) { _listsFirstSnap = false; render(); }
+      else if (newStr !== oldStr) render();
     } else {
-      // Primera vez: no existe el documento → guardar defaults
+      // Primera vez: no existe el documento → guardar defaults y renderizar
       saveLists(LISTS);
+      if (_listsFirstSnap) { _listsFirstSnap = false; render(); }
     }
-  }, err => console.error('subscribeLists error:', err));
+  }, err => { console.error('subscribeLists error:', err); if (_listsFirstSnap) { _listsFirstSnap = false; render(); } });
 }
 
 function addToList(type, name) {
